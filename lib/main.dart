@@ -129,6 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
       form.save();
       setState(() {
         _contacts.add(Contact(id:null, name:_contact.name, mobile: _contact.mobile));
+        //_contacts.add(_contact);
+
       });
       form.reset();
     }
