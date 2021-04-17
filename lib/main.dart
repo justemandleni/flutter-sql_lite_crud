@@ -100,10 +100,12 @@ class _MyHomePageState extends State<MyHomePage> {
           TextFormField(
             decoration: InputDecoration(labelText: 'Full Name'),
             onSaved: (val) => setState(() => _contact.name = val),
+            validator: (val) => (val.length == 0 ? 'This field is required': null),
           ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Mobile'),
             onSaved: (val) => setState(() => _contact.mobile = val),
+            validator: (val) => (val.length < 10 ? 'Atleast 10 characters required': null),
           ),
           
           Container(
@@ -122,8 +124,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _onSubmit(){
     var form = _formKey.currentState;
-    form.save();
-    print(_contact.name);
+    if(form.validate()){
+      form.save();
+      print(_contact.name);
+      //print(_contact.mobile);
+    }
   }
   _list() => Container();
 
