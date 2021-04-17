@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sql_lite_crud/models/contact.dart';
 
 const darkBlueColor = Color(0xff486579);
 
@@ -39,19 +40,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  Contact _contact = Contact();
   final _formKey = GlobalKey<FormState>();
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,22 +99,32 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(labelText: 'Full Name'),
+            onSaved: (val) => setState(() => _contact.name = val),
           ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Mobile'),
+            onSaved: (val) => setState(() => _contact.mobile = val),
           ),
           
           Container(
             margin: EdgeInsets.all(10.0),
-            child: RaisedButton(onPressed: null,
-            child: Text('Submit'),
-            color: darkBlueColor,)
+            // ignore: deprecated_member_use
+            child: RaisedButton(
+              onPressed: ()=> _onSubmit(),
+              child: Text('Submit'),
+              color: darkBlueColor,
+              textColor: Colors.white,)
           )
         ],
       ),
     ),
   );
 
+  _onSubmit(){
+    var form = _formKey.currentState;
+    form.save();
+    print(_contact.name);
+  }
   _list() => Container();
 
 }
