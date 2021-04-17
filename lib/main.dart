@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sql_lite_crud/models/contact.dart';
+import 'package:sql_lite_crud/utils/database_helper.dart';
 
 const darkBlueColor = Color(0xff486579);
 
@@ -42,7 +43,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Contact _contact = Contact();
   List<Contact> _contacts = [];
+  DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _databaseHelper = DatabaseHelper.instance;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,15 +134,15 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   );
 
-  _onSubmit(){
+  _onSubmit() async{
     var form = _formKey.currentState;
     if(form.validate()){
       form.save();
-      setState(() {
-        _contacts.add(Contact(id:null, name:_contact.name, mobile: _contact.mobile));
-        //_contacts.add(_contact);
-
-      });
+      //setState(() {
+      //  _contacts.add(Contact(id:null, name:_contact.name, mobile: _contact.mobile));
+      //  //_contacts.add(_contact);
+      //});
+      await _databaseHelper.insertContact(_contact);
       form.reset();
     }
   }
