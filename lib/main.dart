@@ -41,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Contact _contact = Contact();
+  List<Contact> _contacts = [];
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -126,10 +127,39 @@ class _MyHomePageState extends State<MyHomePage> {
     var form = _formKey.currentState;
     if(form.validate()){
       form.save();
+      setState(() {
+        _contacts.add(_contact);
+      });
       print(_contact.name);
       //print(_contact.mobile);
     }
   }
-  _list() => Container();
+
+  _list() => Expanded(
+    child: Card(
+      margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
+      child: ListView.builder(
+        padding: EdgeInsets.all(8),
+        itemBuilder: (context, index){
+          return Column(
+            children: <Widget>[
+              ListTile(
+                  leading: Icon(Icons.account_circle, color:darkBlueColor, size: 40.0),
+                  title: Text(_contacts[index].name.toUpperCase(),
+                  style: TextStyle(color: darkBlueColor, fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_contacts[index].mobile),
+              ),
+              Divider(
+                height: 5.0,
+              ),
+            ]
+          );
+        },
+        itemCount: _contacts.length,
+        ),
+      )
+    
+    );
 
 }
